@@ -36,7 +36,7 @@ composer require rector/rector --dev
 ```
 
 ## Laravel Pint
-```php
+```json
   "preset": "laravel",
   "rules": {
     "declare_strict_types": true,
@@ -58,11 +58,10 @@ composer require rector/rector --dev
     "strict_comparison": true,
     "backtick_to_shell_exec": true
   }
-}
 ```
 
 ## Larastan
-```php
+```neon
 includes:
     - vendor/larastan/larastan/extension.neon
     - vendor/phpstan/phpstan/conf/bleedingEdge.neon
