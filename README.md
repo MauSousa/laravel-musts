@@ -4,7 +4,7 @@
 
 Larastan 
 ```
-composer require --dev "larastan/larastan"
+composer require "larastan/larastan" --dev
 ```
 
 Rector 
