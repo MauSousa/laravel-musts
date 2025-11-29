@@ -12,6 +12,11 @@ Rector
 composer require rector/rector --dev
 ```
 
+Rector for laravel
+```
+composer require --dev driftingly/rector-laravel
+```
+
 ## AppServiceProvider.php
 ```php
 <?php
@@ -69,6 +74,7 @@ class AppServiceProvider extends ServiceProvider
 
 ## Laravel Pint
 ```json
+{
   "preset": "laravel",
   "rules": {
     "declare_strict_types": true,
@@ -111,24 +117,41 @@ parameters:
 
 declare(strict_types=1);
 
+use Rector\CodingStyle\Rector\ClassLike\NewlineBetweenClassLikeStmtsRector;
 use Rector\Config\RectorConfig;
+use RectorLaravel\Rector\FuncCall\RemoveDumpDataDeadCodeRector;
+use RectorLaravel\Set\LaravelSetList;
 
 return RectorConfig::configure()
     ->withPaths([
-        __DIR__ . '/app',
-        __DIR__ . '/bootstrap/app.php',
-        __DIR__ . '/database',
-        __DIR__ . '/public',
+        __DIR__.'/app',
+        __DIR__.'/bootstrap/app.php',
+        __DIR__.'/database',
+        __DIR__.'/public',
+    ])
+    ->withSets([
+        LaravelSetList::LARAVEL_CODE_QUALITY,
+        LaravelSetList::LARAVEL_COLLECTION,
+        LaravelSetList::LARAVEL_FACTORIES,
+        LaravelSetList::LARAVEL_IF_HELPERS,
+        LaravelSetList::LARAVEL_TYPE_DECLARATIONS,
     ])
     ->withPreparedSets(
         deadCode: true,
         codeQuality: true,
+        codingStyle: true,
         typeDeclarations: true,
         privatization: true,
         earlyReturn: true,
-        strictBooleans: true,
     )
-    ->withPhpSets();
+    ->withConfiguredRule(RemoveDumpDataDeadCodeRector::class, [
+        'dd',
+        'dump',
+        'var_dump',
+    ])
+    ->withSkip([
+        NewlineBetweenClassLikeStmtsRector::class,
+    ]);
 ```
 
 ## Commands for composer.json
@@ -173,3 +196,21 @@ return RectorConfig::configure()
     "test:lint": "prettier --check resources/ && eslint ."
   },
 ```
+## Packages for blade files
+```
+npm install -D prettier prettier-plugin-tailwindcss
+```
+
+```
+npm install --save-dev @shufo/prettier-plugin-blade prettier
+```
+
+## Commands for package.json (only if using blade files)
+```json
+"scripts": {
+    "build": "vite build",
+    "dev": "vite",
+    "format": "prettier --write resources/views/**/*.blade.php resources/views/**/**/*.blade.php",
+    "format:check": "prettier --check resources/views/**/*.blade.php resources/views/**/**/*.blade.php"
+},
+
