@@ -156,32 +156,32 @@ return RectorConfig::configure()
 
 ## Commands for composer.json
 ```json
-"lint": [
-      "pint",
-      "npm run lint"
-    ],
-    "refactor": [
-      "rector"
-    ],
-    "test:unit": [
-      "pest --parallel"
-    ],
-    "test:types": [
-      "phpstan analyse"
-    ],
-    "test:lint": [
-      "pint --test",
-      "npm run test:lint"
-    ],
-    "test:refactor": [
-      "rector --dry-run"
-    ],
-    "test": [
-      "@test:lint",
-      "@test:unit",
-      "@test:types",
-      "@test:refactor"
-    ]
+"format": [
+    "pint --parallel",
+    "npm run format"
+],
+"analyse": [
+    "phpstan analyse"
+],
+"refactor": [
+    "rector"
+],
+"test:unit": [
+    "pest --parallel"
+],
+"format:check": [
+    "pint --test",
+    "npm run format:check"
+],
+"test:refactor": [
+    "rector --dry-run"
+],
+"test": [
+    "@test:refactor",
+    "@format:check",
+    "@test:unit",
+    "@analyse"
+]
 ```
 
 ## Commands for package.json (only if using inertia.js)
@@ -197,6 +197,18 @@ return RectorConfig::configure()
   },
 ```
 ## Packages for blade files
+```
+composer require barryvdh/laravel-debugbar --dev
+```
+
+```
+composer require --dev barryvdh/laravel-ide-helper
+```
+
+```
+php artisan ide-helper:generate
+```
+
 ```
 npm install -D prettier prettier-plugin-tailwindcss
 ```
